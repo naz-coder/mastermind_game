@@ -4,6 +4,35 @@
 #include <time.h>
 #include <string.h>
 
+/* function for a secret number generation */
+void selectRandomNumber(char codeLength[4]){             
+    srand(time(0));                                         // the random number generator used by the rand() is seeded using srand() and NULL or 0 is used to set time seed to current
+    // codeLength[4] = {2,2,2,2};                           //instead of int* codeLength = malloc(sizeof(int) *4);  allocating memory and string length to the secret code - dont forget to call the codeLength() whereever the selectRandomNumber() is used
+    int position[128] = {0};                                //ASCII positions instead of
+    int currPos = 0;
+    while(currPos < 4){
+        int ranNum = rand() % 8;                            // random numbers between 0-7 similar function as Math.floor(Maths.random (8) *1)
+        if(position[ranNum] == 1){                          //to check if ranNum has already being assigned/used
+            continue;
+        }
+        codeLength[currPos] = ranNum + '0';                 //-'0' converts the the ranNum to the character equuilavent in the ASCII positions... = for assigning a value and == for comparison
+        currPos++;                                          //increment the currPos or mv on to the next position i.e from 0 to 1
+        position[ranNum] = 1;                               //indicates that this position of the ranNum has been used
+    }
+}
+
+/* function to authenticate or confirm if user input code string is of correct length and of unique numbers. */
+int userGuessCodeAuth(char* code){
+    int count = 0;
+    while(*code != '\0'){                                   //*code(actual value of the code) since we dont know the length of the code
+        count++;
+        code++;
+    }if (count == 4){
+        return 0;
+    }else{
+        return 1;
+    }
+}
 
 /* main function to run the program */
 int main(int argc, char** argv){                            //argc is the total no of chr or argument entered in the cmd and argv is the value itself entered by the user
